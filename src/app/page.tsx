@@ -7,8 +7,10 @@ import { SearchSelect } from "@/components/search-select";
 import { useEffect, useState } from "react";
 import { cities, specialties } from "@/db/seed/advocates";
 import { SearchInput } from "@/components/search-input";
+import { AdvocatesTable } from "@/components/data-table";
 
-type Advocate = {
+export type Advocate = {
+  id: number
   firstName: string
   lastName: string
   city: string
@@ -34,52 +36,22 @@ export default function Home() {
     });
   }, []);
 
-  // const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const searchTerm = e.target.value;
-  //   setSearchTerm(searchTerm);
-
-  //   // document.getElementById("search-term").innerHTML = searchTerm;
-
-  //   console.log("filtering advocates...");
-  //   const filteredAdvocates = advocates.filter((advocate) => {
-  //     return (
-  //       advocate.firstName.includes(searchTerm) ||
-  //       advocate.lastName.includes(searchTerm) ||
-  //       advocate.city.includes(selectedCity) ||
-  //       advocate.degree.includes(searchTerm) ||
-  //       selectedSpecialties.some(specialty => advocate.specialties.includes(specialty)) ||
-  //       advocate.yearsOfExperience.toString().includes(searchTerm)
-  //     );
-  //   });
-
-  //   setAdvocates(filteredAdvocates);
-  // };
-
   useEffect(() => {
     console.log("filtering advocates...");
     const response = fetch("/api/advocates").then((response) => {
       response.json().then(response => {
         const filteredAdvocates = response.data.filter((advocate: Advocate) => {
           return (
-            advocate.firstName.includes(searchTerm) ||
-            advocate.lastName.includes(searchTerm) ||
-            advocate.city.includes(selectedCity) ||
-            selectedSpecialties.some(specialty => advocate.specialties.includes(specialty))
+            (searchTerm.length === 0 || advocate.firstName.includes(searchTerm)) ||
+            (searchTerm.length === 0 || advocate.lastName.includes(searchTerm))  ||
+            (selectedCity === "all" || advocate.city.includes(selectedCity)) ||
+            (selectedSpecialties.length === 0 || selectedSpecialties.some(specialty => advocate.specialties.includes(specialty)))
           );
         });
         setAdvocates(filteredAdvocates);
       });
     });
   }, [selectedCity, selectedSpecialties, searchTerm]);
-
-  // const onClick = () => {
-  //   console.log(advocates);
-  //   fetch("/api/advocates").then((response) => {
-  //     response.json().then((jsonResponse) => {
-  //       setAdvocates(jsonResponse.data);
-  //     });
-  //   });
-  // };
 
   return (
 
@@ -120,36 +92,7 @@ export default function Home() {
                 Showing {advocates.length} of {advocates.length} providers
               </p>
             </div>
-            <table>
-        <thead>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>City</th>
-          <th>Degree</th>
-          <th>Specialties</th>
-          <th>Years of Experience</th>
-          <th>Phone Number</th>
-        </thead>
-        <tbody>
-          {advocates.map((advocate) => {
-            return (
-              <tr>
-                <td>{advocate.firstName}</td>
-                <td>{advocate.lastName}</td>
-                <td>{advocate.city}</td>
-                <td>{advocate.degree}</td>
-                <td>
-                  {advocate.specialties.map((s) => (
-                    <div>{specialties.find((specialty) => specialty.value === s)?.label}</div>
-                  ))}
-                </td>
-                <td>{advocate.yearsOfExperience}</td>
-                <td>{advocate.phoneNumber}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            <AdvocatesTable advocates={advocates} />
           </div>
         </div>
       </main>
