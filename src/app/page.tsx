@@ -2,7 +2,6 @@
 
 import { MultiSelect } from "@/components/multi-select";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { SearchSelect } from "@/components/search-select";
 import { useEffect, useState } from "react";
 import { cities, specialties } from "@/db/seed/advocates";
@@ -54,10 +53,18 @@ export default function Home() {
   }, [selectedCity, selectedSpecialties, searchTerm]);
 
   return (
-
+    <>
+    
+    <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center px-8">
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-semibold">Solace Advocates</span>
+          </div>
+        </div>
+      </header>
     
       <main className="min-h-screen p-8">
-        <div className="mx-auto max-w-6xl space-y-8">
+        <div className="mx-auto max-w-7xl space-y-8">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold">Healthcare Advocate Directory</h1>
             <p className="text-muted-foreground">Find healthcare advocates by location and specialty</p>
@@ -96,6 +103,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-    
+      </>
   );
 }
