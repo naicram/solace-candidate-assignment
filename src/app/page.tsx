@@ -89,7 +89,7 @@ export default function Home() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <p className="text-sm text-muted-foreground">
-                Showing {advocates.length} of {advocates.length} providers
+                Showing {advocates.length} of {advocates.length} advocates
               </p>
             </div>
             <AdvocatesTable advocates={advocates} />

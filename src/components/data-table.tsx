@@ -53,7 +53,7 @@ export function AdvocatesTable({ advocates }: AdvocatesTableProps) {
             {advocates.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
-                  No providers found matching your filters.
+                  No advocates found matching your filters.
                 </TableCell>
               </TableRow>
             ) : (
